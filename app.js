@@ -23,11 +23,6 @@ app.post('/webhook', (req, res) => {
 
 app.listen(port)
 function reply(reply_token, msg) {
-    let headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer {lwIfAPK5C+0hfoIcSjTjw8IlaMuuVVDlFbiZbUZb1rngt6ZavKw2uTPXsVayF5KRuS8VR6ZjKAnEN7veRIWzDQOQly9LcOhAMN6Z81skFi70mVm2XOtvHfl8K05TqccU8hamC277MAnLh2CwYQ0CBAdB04t89/1O/w1cDnyilFU=}'
-    }
-
     const options = new URL('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol='+msg+'.BK&apikey=ZIBM6AL9W01TSKZH');
 	https.request(options, function(res) {
 	  console.log('STATUS: ' + res.statusCode);
@@ -54,7 +49,10 @@ function reply(reply_token, msg) {
 }
 
 function sendMessage(response,reply_token){
-
+    let headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer {lwIfAPK5C+0hfoIcSjTjw8IlaMuuVVDlFbiZbUZb1rngt6ZavKw2uTPXsVayF5KRuS8VR6ZjKAnEN7veRIWzDQOQly9LcOhAMN6Z81skFi70mVm2XOtvHfl8K05TqccU8hamC277MAnLh2CwYQ0CBAdB04t89/1O/w1cDnyilFU=}'
+    }
     let body = JSON.stringify({
         replyToken: reply_token,
         messages: [{
