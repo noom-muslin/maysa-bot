@@ -47,13 +47,13 @@ function reply(reply_token, msg) {
 	    console.log("NOOM: "+JSON.stringify(firstElementKey));
 	    console.log("NOOM: "+JSON.stringify(result[firstElementKey]));
 	    let response = JSON.stringify(firstElementKey)+"/n"+JSON.stringify(result[firstElementKey]);
-	    sendMessage(response)
+	    sendMessage(response,reply_token)
 	  });
 	}).end();
 
 }
 
-function sendMessage(response){
+function sendMessage(response,reply_token){
 
     let body = JSON.stringify({
         replyToken: reply_token,
