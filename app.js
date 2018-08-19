@@ -29,7 +29,6 @@ function reply(reply_token, msg) {
     }
 
     const options = new URL('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol='+msg+'.BK&apikey=ZIBM6AL9W01TSKZH');
-	let response;
 	https.request(options, function(res) {
 	  console.log('STATUS: ' + res.statusCode);
 	  console.log('HEADERS: ' + JSON.stringify(res.headers));
@@ -47,9 +46,14 @@ function reply(reply_token, msg) {
 	    let firstElementKey = Object.keys(result)[0];
 	    console.log("NOOM: "+JSON.stringify(firstElementKey));
 	    console.log("NOOM: "+JSON.stringify(result[firstElementKey]));
-	    response = JSON.stringify(firstElementKey)+"/n"+JSON.stringify(result[firstElementKey]);
+	    let response = JSON.stringify(firstElementKey)+"/n"+JSON.stringify(result[firstElementKey]);
+	    sendMessage(response)
 	  });
 	}).end();
+
+}
+
+function sendMessage(response){
 
     let body = JSON.stringify({
         replyToken: reply_token,
