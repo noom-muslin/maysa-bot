@@ -21,11 +21,12 @@ app.post('/webhook', (req, res) => {
 
 app.listen(port)
 function reply(reply_token, msg) {
-    getStockData(msg).then(response => sendMessage(response, reply_token));
+    getStockData(msg)
+    .then(response => sendMessage(msg, response, reply_token))
 }
 
 function getStockData(msg){
-    axios.get('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol='+msg+'.BK&apikey=ZIBM6AL9W01TSKZH')
+    const request = axios.get('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol='+msg+'.BK&apikey=ZIBM6AL9W01TSKZH')
     .then(response => {
         console.log('STATUS: ' + response.statusCode);
     	console.log('HEADERS: ' + JSON.stringify(response.headers));
@@ -37,10 +38,12 @@ function getStockData(msg){
     })
     .catch(error => {
         console.log(error);
-    }).;
+    })
+
+    return request
 }
 
-function sendMessage(response,reply_token){
+function sendMessage(msg, response,reply_token){
     let headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer {lwIfAPK5C+0hfoIcSjTjw8IlaMuuVVDlFbiZbUZb1rngt6ZavKw2uTPXsVayF5KRuS8VR6ZjKAnEN7veRIWzDQOQly9LcOhAMN6Z81skFi70mVm2XOtvHfl8K05TqccU8hamC277MAnLh2CwYQ0CBAdB04t89/1O/w1cDnyilFU=}'
@@ -50,7 +53,7 @@ function sendMessage(response,reply_token){
         replyToken: reply_token,
         messages: [{
             type: 'text',
-            text: "Here you are : \n"+response
+            text: '['+msg.toUpperCase()+']Here you are : '+response
         }]
     })
     request.post({
