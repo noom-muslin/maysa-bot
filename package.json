@@ -18,6 +18,7 @@
   "homepage": "https://github.com/noom-muslin/maysa-bot#readme",
   "dependencies": {
     "Promise": "^1.0.5",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "lodash-node": "^3.10.2",
