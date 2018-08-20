@@ -17,12 +17,10 @@
   },
   "homepage": "https://github.com/noom-muslin/maysa-bot#readme",
   "dependencies": {
+    "Promise": "^1.0.5",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
-    "http": "0.0.0",
-    "https": "^1.0.0",
     "lodash-node": "^3.10.2",
-    "request": "^2.88.0",
     "url": "^0.11.0"
   }
 }
