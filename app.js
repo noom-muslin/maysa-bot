@@ -64,3 +64,5 @@ function sendMessage(msg, response,reply_token){
         console.log('status = ' + res.statusCode);
     });
 }
+
+// getStockData("CPN").then(response => console.log("###:"+response));
