@@ -1,21 +1,4 @@
 <script src="https://d.line-scdn.net/liff/1.0/sdk.js" /></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
-  <script>
-    const canvas = document.querySelector('#canvas');
-    const signaturePad = new SignaturePad(canvas, {
-      backgroundColor: 'rgb(238,238,238)',
-    });
-
-    $(window).on('load', function(){
-      canvas.setAttribute('width', $('.container').width());
-      canvas.setAttribute('height', window.innerHeight - $('#btn').outerHeight() - 10);
-      signaturePad.clear();
-	  // Initializes a LIFF app
-      liff.init(function (data) {});
-    });
-  </script>
- -->
-
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -115,11 +98,24 @@ function toggleDataSeries(e) {
 	e.chart.render();
 }
 
+liff.init(
+  data => {
+    // Now you can call LIFF API
+	const userId = data.context.userId;
+	console.log("data context:::"+userId);
+	document.getElementById("test").innerHTML = "!!!" + userId + "!!!";
+  },
+  err => {
+    // LIFF initialization failed
+  }
+);
+
 }
 </script>
 </head>
 <body>
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<p id="test"></p>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>

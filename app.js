@@ -23,10 +23,24 @@ app.post('/webhook', (req, res) => {
 
 app.listen(port)
 function reply(reply_token, msg) {
-    getStockData(msg).then(response => {
-        console.debug("DEBUG:" + response)
+    if(msg == "LIFF"){
+        sendLiff()
+        .then(liffUrl => {
+            msg = liffUrl
+            sendMessage(msg, response, reply_token)
+        })
+        .catch(error => {
+            console.log("liff failed:", error)
+        });
         sendMessage(msg, response, reply_token)
-    })
+    } else {
+        getStockData(msg).then(response => {
+            console.debug("DEBUG:" + response)
+            sendMessage(msg, response, reply_token)
+        }).catch(error => {
+            console.log(error);
+        })
+    }
 }
 
 app.get('/chart',function(req,res){
@@ -36,7 +50,6 @@ app.get('/chart',function(req,res){
 function getStockData(msg){
     const request = axios.get('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol='+msg+'.BK&apikey=ZIBM6AL9W01TSKZH')
     .then(response => {
-        console.log('STATUS: ' + response.statusCode);
     	console.log('HEADERS: ' + JSON.stringify(response.headers));
         console.log('DATA: ' + JSON.stringify(response.data));
         let firstElement = response.data["Time Series (Daily)"]
@@ -75,4 +88,30 @@ function sendMessage(msg, response,reply_token){
     });
 }
 
+function sendLiff(){
+    let header = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer {lwIfAPK5C+0hfoIcSjTjw8IlaMuuVVDlFbiZbUZb1rngt6ZavKw2uTPXsVayF5KRuS8VR6ZjKAnEN7veRIWzDQOQly9LcOhAMN6Z81skFi70mVm2XOtvHfl8K05TqccU8hamC277MAnLh2CwYQ0CBAdB04t89/1O/w1cDnyilFU=}'
+    }
+
+    let body = JSON.stringify({
+        view: {
+            type: 'tall',
+            url: 'https://maysa-bot.herokuapp.com/chart'
+        }
+    })
+
+    let request = axios.post('https://api.line.me/liff/v1/apps', body, { headers:header} )
+      .then(function (response) {
+    	console.log('HEADERS: ' + JSON.stringify(response.headers))
+        console.log('DATA: ' + JSON.stringify(response.data))
+        let liffUrl = "line://app/"+response.data.liffId
+        return liffUrl
+      })
+      .catch(function (error) {
+        console.log("liff failed:", error)
+      });
+
+    return request;
+}
 // getStockData("CPN").then(response => console.log("###:"+response));
