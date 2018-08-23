@@ -28,6 +28,10 @@ function reply(reply_token, msg) {
     })
 }
 
+app.get('/chart',function(req,res){
+    res.sendFile(path.join(__dirname+'/chart.html'));
+  });
+
 function getStockData(msg){
     const request = axios.get('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol='+msg+'.BK&apikey=ZIBM6AL9W01TSKZH')
     .then(response => {
