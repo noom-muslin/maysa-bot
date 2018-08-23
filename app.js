@@ -23,7 +23,9 @@ app.post('/webhook', (req, res) => {
 
 app.listen(port)
 function reply(reply_token, msg) {
-    if(msg == "LIFF"){
+    console.log("HELLO:",msg)
+    if(msg === "LIFF"){
+        console.log("I am here:",msg)
         sendLiff()
         .then(liffUrl => {
             msg = liffUrl
@@ -32,7 +34,6 @@ function reply(reply_token, msg) {
         .catch(error => {
             console.log("liff failed:", error)
         });
-        sendMessage(msg, response, reply_token)
     } else {
         getStockData(msg).then(response => {
             console.debug("DEBUG:" + response)
