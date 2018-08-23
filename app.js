@@ -57,7 +57,7 @@ function sendMessage(msg, response,reply_token){
         replyToken: reply_token,
         messages: [{
             type: 'text',
-            text: '['+msg.toUpperCase()+']Here you are : '+response
+            text: 'Here you are ['+msg.toUpperCase()+'] : '+response
         }]
     })
 
