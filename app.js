@@ -23,12 +23,11 @@ app.post('/webhook', (req, res) => {
 
 app.listen(port)
 function reply(reply_token, msg) {
-    console.log("HELLO:",msg)
+    
     if(msg === "LIFF"){
-        console.log("I am here:",msg)
         sendLiff()
         .then(liffUrl => {
-            msg = liffUrl
+            let response = liffUrl
             sendMessage(msg, response, reply_token)
         })
         .catch(error => {
