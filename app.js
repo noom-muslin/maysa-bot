@@ -8,6 +8,7 @@ const _ = require('lodash-node/compat');
 const axios = require('axios');
 const request = require('request');
 const path = require("path");
+const express = require('express');
 
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -28,6 +29,7 @@ function reply(reply_token, msg) {
         sendLiff()
         .then(liffUrl => {
             let response = liffUrl
+            console.debug("DEBUG:" + response)            
             sendMessage(msg, response, reply_token)
         })
         .catch(error => {
@@ -115,3 +117,12 @@ function sendLiff(){
     return request;
 }
 // getStockData("CPN").then(response => console.log("###:"+response));
+sendLiff()
+        .then(liffUrl => {
+            let response = liffUrl
+            console.debug("DEBUG:" + response)            
+            // sendMessage(msg, response, reply_token)
+        })
+        .catch(error => {
+            console.log("liff failed:", error)
+        });
