@@ -9,12 +9,13 @@ const kafka = require('kafka-node');
 const port = process.env.PORT || config.port ;
 const KeyedMessage = kafka.KeyedMessage
 const Producer = kafka.Producer;
+const Consumer = kafka.Consumer;
 
 const app = express();
 
 app.get('/', (req, res) => {
     res.send('hello world');
-    handleEvent("DEMO")
+    handleEvent(config)
   });
 
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -24,8 +25,6 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     }
     // handle events separately
     Promise.all(req.body.events.map(event => {
-      console.log('RECIEVE:', event);
-
       return handleEvent(event);
     }))
     .then(() => res.end())
@@ -40,15 +39,15 @@ function handleEvent(event) {
     var producer =  new Producer(client);
 
     var corelationId = config.appName+'-'+uuid();
-    console.log('HANDLE:', corelationId, " ::: ", event);
+
     var eventMessage = new KeyedMessage(corelationId, event);
     var payloads = [
-        { topic: config.topicName, messages: eventMessage }
+        { topic: config.topicName, messages: JSON.stringify(eventMessage) }
     ];
 
     producer.on('ready', function () {
         producer.send(payloads, function (err, data) {
-            console.log("SEND PAYLOAD:", payloads[0].messages, " DATA:", data);
+            console.log("SEND PAYLOAD:", JSON.stringify(payloads), " DATA:", data);
         });
     });
     
