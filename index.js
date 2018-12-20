@@ -3,7 +3,7 @@
 const line = require('@line/bot-sdk');
 const express = require('express');
 const config = require('./config.json');
-const uuidv1 = require('uuid/v1');
+const uuid = require('uuid/v4');
 const kafka = require('kafka-node');
 
 const port = config.port|| 4000;
@@ -36,24 +36,24 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   });
 
 function handleEvent(event) {
-    var client = new kafka.KafkaClient({kafkaHost: config.KafkaHost});
+    var client = new kafka.KafkaClient({kafkaHost: config.kafkaHost});
     var producer =  new Producer(client);
 
-    console.log('HANDLE:', event);
-    var eventMessage = new KeyedMessage(config.appName+'-'+uuidv1(), event);
+    var corelationId = config.appName+'-'+uuid();
+    console.log('HANDLE:', corelationId, " ::: ", event);
+    var eventMessage = new KeyedMessage(corelationId, event);
     var payloads = [
         { topic: config.topicName, messages: eventMessage }
     ];
 
     producer.on('ready', function () {
-        console.log("PRODUCER IS READY!!!");
         producer.send(payloads, function (err, data) {
-            console.log("SEND PAYLOAD:" + payloads[0].messages + " DATA:"+ data);
+            console.log("SEND PAYLOAD:", payloads[0].messages, " DATA:", data);
         });
     });
     
     producer.on('error', function (err) {
-        console.log("ERROR:"+err);
+        console.log("ERROR:",err);
     })
 }
 
