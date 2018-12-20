@@ -3,11 +3,16 @@
 const line = require('@line/bot-sdk');
 const express = require('express');
 const config = require('./config.json');
+const port = process.env.PORT || 4000
 
 // create LINE SDK client
 const client = new line.Client(config);
 
 const app = express();
+
+app.get('/', (req, res) => {
+    res.send('hello world');
+  });
 
 app.post('/webhook', line.middleware(config), (req, res) => {
     // req.body.events should be an array of events
@@ -30,3 +35,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   function handleEvent(event) {
     console.log('HANDLE:', event);
   }
+
+app.listen(port, () => {
+  console.log(`listening on ${port}`);
+});
