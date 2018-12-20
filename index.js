@@ -6,7 +6,7 @@ const config = require('./config.json');
 const uuid = require('uuid/v4');
 const kafka = require('kafka-node');
 
-const port = config.port|| 4000;
+const port = process.env.PORT || config.port ;
 const KeyedMessage = kafka.KeyedMessage
 const Producer = kafka.Producer;
 
