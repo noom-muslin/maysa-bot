@@ -8,8 +8,8 @@ const kafka = require('kafka-node');
 
 const port = process.env.PORT || config.port ;
 const KeyedMessage = kafka.KeyedMessage
+const HighLevelProducer = kafka.HighLevelProducer
 const Producer = kafka.Producer;
-const Consumer = kafka.Consumer;
 
 const app = express();
 
@@ -36,7 +36,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 function handleEvent(event) {
     var client = new kafka.KafkaClient({kafkaHost: config.kafkaHost});
-    var producer =  new Producer(client);
+    var producer =  new HighLevelProducer(client);
 
     var corelationId = config.appName+'-'+uuid();
 
