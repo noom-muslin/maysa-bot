@@ -2,14 +2,14 @@
 
 const line = require('@line/bot-sdk');
 const express = require('express');
-const config = require('./config.json');
+const Config = require('./config.js');
 const uuid = require('uuid/v4');
 const kafka = require('kafka-node');
 
+const config = Config.config;
 const port = process.env.PORT || config.port ;
 const KeyedMessage = kafka.KeyedMessage
 const HighLevelProducer = kafka.HighLevelProducer
-const Producer = kafka.Producer;
 
 const app = express();
 
