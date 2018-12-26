@@ -40,9 +40,8 @@ function handleEvent(event) {
 
     var corelationId = config.appName+'-'+uuid();
 
-    var eventMessage = new KeyedMessage(corelationId, event);
     var payloads = [
-        { topic: config.topicName, messages: JSON.stringify(eventMessage) }
+        { topic: config.topicName, key:corelationId, messages: JSON.stringify(event) }
     ];
 
     producer.on('ready', function () {
