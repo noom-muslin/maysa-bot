@@ -46,10 +46,8 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 function handleEvent(event) {
 
     var corelationId = config.appName+'-'+uuid();
-    var eventMessage = new KeyedMessage(corelationId, event);
     var payloads = [
-        // { topic: config.topicName, messages: JSON.stringify(eventMessage) },
-        { topic: config.topicName, messages: JSON.stringify(eventMessage) }
+        { topic: config.topicName, key: corelationId,  messages: JSON.stringify(event) }
     ];
     producer.send(payloads, function (err, data) {
         console.log("SEND PAYLOAD:", JSON.stringify(payloads), " DATA:", data);
