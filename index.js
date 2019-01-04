@@ -8,8 +8,7 @@ const kafka = require('kafka-node');
 
 const config = Config.config;
 const port = process.env.PORT || config.port ;
-const KeyedMessage = kafka.KeyedMessage
-const HighLevelProducer = kafka.HighLevelProducer
+const HighLevelProducer = kafka.HighLevelProducer;
 
 const options = {
     requireAcks: 1,
@@ -32,6 +31,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     if (!Array.isArray(req.body.events)) {
       return res.status(500).end();
     }
+
     // handle events separately
     Promise.all(req.body.events.map(event => {
       return handleEvent(event);
@@ -47,7 +47,7 @@ function handleEvent(event) {
 
     var corelationId = config.appName+'-'+uuid();
     var payloads = [
-        { topic: config.topicName, key: corelationId,  messages: JSON.stringify(event) }
+        { topic: config.webhookTopicName, key: corelationId,  messages: JSON.stringify(event) }
     ];
     producer.send(payloads, function (err, data) {
         console.log("SEND PAYLOAD:", JSON.stringify(payloads), " DATA:", data);
