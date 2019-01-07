@@ -1,5 +1,6 @@
 require('custom-env').env(true)
 
+const validate = process.env.VALIDATE
 const config = {
   "port" : process.env.PORT,
   "channelSecret": process.env.CHANNEL_SECRET,
