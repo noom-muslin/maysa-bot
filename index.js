@@ -21,9 +21,6 @@ const producer =  new HighLevelProducer(client, options);
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
 app.get('/', (req, res) => {
     res.send('hello world');
     validate(config);
@@ -51,9 +48,22 @@ function validate(config){
   if(config.validate){
     return line.middleware(config);
   } else {
-      return (req, res, next) => {
-        next();
-      }
+    return (req, res, next) => {
+        let getBody = new Promise(resolve => {
+            bodyParser.raw({ type: "*/*" })(req, res, () => resolve(req.body));
+        });
+        
+        getBody.then(function(body) {
+            const strBody = Buffer.isBuffer(body) ? body.toString() : body;
+        
+            req.body = JSON.parse(strBody);
+            next();
+           
+        })
+        
+    }
+      
+      
   }
 }
 
