@@ -5,7 +5,7 @@ const express = require('express');
 const Config = require('./config.js');
 const uuid = require('uuid/v4');
 const kafka = require('kafka-node');
-
+const bodyParser = require('body-parser')
 const config = Config.config;
 const port = process.env.PORT || config.port ;
 const HighLevelProducer = kafka.HighLevelProducer;
@@ -20,6 +20,9 @@ const client = new kafka.KafkaClient({kafkaHost: config.kafkaHost});
 const producer =  new HighLevelProducer(client, options);
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
     res.send('hello world');
