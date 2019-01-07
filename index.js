@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
     handleEvent(JSON.parse('{"type":"message","replyToken":"9407d326aef742cfab5517c35662f7e7","source":{"userId":"Uafdea049ee01fdfe5085af9d88cb3512","type":"user"},"timestamp":1545811209919,"message":{"type":"text","id":"9073356552278","text":"DEMOOOOOOO"}}'));
 });
 
-app.post('/webhook', validate(config), (req, res) => {
+app.post('/webhook', (req, res) => {
     // req.body.events should be an array of events
     if (!Array.isArray(req.body.events)) {
       return res.status(500).end();
