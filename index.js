@@ -23,6 +23,7 @@ const app = express();
 
 app.get('/', (req, res) => {
     res.send('hello world');
+    validate(config);
     handleEvent(JSON.parse('{"type":"message","replyToken":"9407d326aef742cfab5517c35662f7e7","source":{"userId":"Uafdea049ee01fdfe5085af9d88cb3512","type":"user"},"timestamp":1545811209919,"message":{"type":"text","id":"9073356552278","text":"DEMOOOOOOO"}}'));
 });
 
