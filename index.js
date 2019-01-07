@@ -46,6 +46,10 @@ app.post('/webhook', validate(config), (req, res) => {
 function validate(config){
   if(config.validate){
     return line.middleware(config);
+  } else {
+      return (req, res, next) => {
+        next();
+      }
   }
 }
 
