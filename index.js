@@ -52,8 +52,6 @@ function validate(config){
     return line.middleware(config);
   } else {
       return (req, res, next) => {
-        console.trace(req.body)
-        console.trace(req.rawBody)
         next();
       }
   }
