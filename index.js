@@ -29,6 +29,7 @@ app.get('/', (req, res) => {
 
 app.post('/webhook', validate(config), (req, res) => {
     // req.body.events should be an array of events
+    console.log(JSON.stringify(req));
     if (!Array.isArray(req.body.events)) {
       return res.status(500).end();
     }
@@ -57,13 +58,9 @@ function validate(config){
             const strBody = Buffer.isBuffer(body) ? body.toString() : body;
         
             req.body = JSON.parse(strBody);
-            next();
-           
-        })
-        
+            next(); 
+        })   
     }
-      
-      
   }
 }
 
